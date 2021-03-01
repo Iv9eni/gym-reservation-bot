@@ -139,16 +139,11 @@ location = input("Type the exact name from the list above (capital sensitive):\t
 
 current_location = LOCATIONS.get(location)
 club_page = "https://lafitness.com/Pages/ClubReservation.aspx?clubID=" + current_location
-# club_page = "file:///C:/Users/ivgen/OneDrive/Desktop/LA/LA%20Fitness%20_%20Club%20Reservation.html"
 
 # END OF MENU #
 
 # OPEN CHROME
 
-# options = Options()
-# options.add_argument('--headless')
-# options.add_argument('--window-size=1920,1080')
-# driver = webdriver.Chrome(PATH, options=options)
 driver = webdriver.Chrome(PATH)
 
 # OPEN LA FITNESS RESERVATIONS PAGE
