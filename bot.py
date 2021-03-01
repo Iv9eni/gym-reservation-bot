@@ -139,7 +139,6 @@ location = input("Type the exact name from the list above (capital sensitive):\t
 
 current_location = LOCATIONS.get(location)
 club_page = "https://lafitness.com/Pages/ClubReservation.aspx?clubID=" + current_location
-# club_page = "file:///C:/Users/ivgen/OneDrive/Desktop/LA/LA%20Fitness%20_%20Club%20Reservation.html"
 
 # END OF MENU #
 
