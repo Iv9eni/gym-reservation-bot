@@ -145,11 +145,10 @@ club_page = "https://lafitness.com/Pages/ClubReservation.aspx?clubID=" + current
 
 # OPEN CHROME
 
-# options = Options()
-# options.add_argument('--headless')
-# options.add_argument('--window-size=1920,1080')
-# driver = webdriver.Chrome(PATH, options=options)
-driver = webdriver.Chrome(PATH)
+options = Options()
+options.add_argument('--headless')
+options.add_argument('--window-size=1920,1080')
+driver = webdriver.Chrome(PATH, options=options)
 
 # OPEN LA FITNESS RESERVATIONS PAGE
 
