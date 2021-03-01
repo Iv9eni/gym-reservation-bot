@@ -1,6 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import datetime
 import sched
 import time
@@ -72,16 +75,44 @@ def reserve(res_time):
         if col != []:
             # Checks if requested time equals to one of the columns and if the type of slot matches requested slot
             if res_time == col[0].text:
-                found = True
-                col[2].click()
+                if col[2].text == "RESERVED":
+                    print("Time for ", res_time, " already reserved.")
+                    found = False
+                else:
+                    found = True
+                    col[2].click()
 
     # Checks if the time slot was found, notifies console and reserves slot
     if found:
         print("Found slot at " + res_time)
 
-        # Clicks OK when prompted after reserve
-        okBtn = driver.find_element_by_xpath("//button[@class='btn btn-default' and text()='OK']")
-        okBtn.click()
+        try:
+            element = WebDriverWait(driver, 1).until(
+                EC.presence_of_element_located((By.XPATH, "//button[@class='btn btn-default' and text()='OK']"))
+            )
+
+            # Clicks OK when prompted after reserve
+            okBtn = driver.find_element_by_xpath("//button[@class='btn btn-default' and text()='OK']")
+            okBtn.click()
+        except:
+            print("Something went wrong...")
+            found = False
+        
+        try:
+            # wait for loading element to appear
+            # - required to prevent prematurely checking if element
+            #   has disappeared, before it has had a chance to appear
+            WebDriverWait(driver, 5
+                ).until(EC.presence_of_element_located((By.ID, "ctl00_MainContent_ucScheduleBooking_imgPrgress")))
+
+            # then wait for the element to disappear
+            WebDriverWait(driver, 10
+                ).until_not(EC.presence_of_element_located((By.ID, "ctl00_MainContent_ucScheduleBooking_imgPrgress")))
+
+        except:
+            driver.refresh()
+            print("Connection timed out...")
+            return False
 
         try:
             find = driver.find_element_by_id("ctl00_MainContent_ucScheduleBooking_lblErrorMessage")
@@ -150,7 +181,7 @@ driver = webdriver.Chrome(PATH)
 
 driver.get(club_page)
 
-login(my_username, my_password)
+#login(my_username, my_password)
 
 print("Attempting to search for times in", location)
 
@@ -164,6 +195,7 @@ while True:
 
         for timeSlot in times:
             reserve(timeSlot)
+
 
     else:
         print("User has been logged out, logging back in...")
