@@ -181,7 +181,7 @@ driver = webdriver.Chrome(PATH)
 
 driver.get(club_page)
 
-#login(my_username, my_password)
+login(my_username, my_password)
 
 print("Attempting to search for times in", location)
 
@@ -195,7 +195,6 @@ while True:
 
         for timeSlot in times:
             reserve(timeSlot)
-
 
     else:
         print("User has been logged out, logging back in...")
