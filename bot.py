@@ -10,7 +10,7 @@ import time
 
 # Constants
 
-PATH = "C:\Program Files (x86)\chromedriver.exe"
+PATH = "./chromedriver.exe"
 LOCATIONS = {
     "vaughan": "655",
     "whitby": "1141",
