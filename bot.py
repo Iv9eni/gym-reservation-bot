@@ -126,8 +126,9 @@ def reserve(res_time):
         print(res_time, " is not available..")
 
     return found
-
+    
 def login(username, password):
+
     # Grabs form elements username, password, and sign in button
     userNameTxt = driver.find_element_by_id("txtUser")
     passWordTxt = driver.find_element_by_id("txtPassword")
@@ -144,7 +145,7 @@ def login(username, password):
 
 def isLoggedIn():
     try:
-        userNameTxt = driver.find_element_by_id("txtUsr")
+        userNameTxt = driver.find_element_by_id("ctl00_MainContent_Login1_btnLogin")
         return False
     except:
         return True
@@ -181,26 +182,28 @@ driver = webdriver.Chrome(PATH)
 
 driver.get(club_page)
 
-login(my_username, my_password)
-
 print("Attempting to search for times in", location)
 
 startTime = time.time()
 while True:
     currentTime = datetime.datetime.now()
     print("Refresh @:\t" + str(currentTime))
+    
+    try:
+        if isLoggedIn():
+            print("Logged in, checking schedule...")
 
-    if isLoggedIn():
-        print("Logged in, checking schedule...")
+            for timeSlot in times:
+                reserve(timeSlot)
 
-        for timeSlot in times:
-            reserve(timeSlot)
-
-    else:
-        print("User has been logged out, logging back in...")
-        login(my_username, my_password)
+        else:
+            print("User has been logged out, logging back in...")
+            login(my_username, my_password)
+            driver.get(club_page)
+            continue
+    except:
         driver.get(club_page)
-        continue
+        print("Something went wrong...")
 
     # Program sleeps for 5 seconds before refreshing
     time.sleep(3.0 - ((time.time() - startTime) % 3.0))
