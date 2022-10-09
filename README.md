@@ -1,4 +1,4 @@
-# LA BOT
+# Gym Reservation Bot
 
 ## Description
 Looks for time slots available in specified location of LA Fitness Gyms and reserves them upon availability.
